@@ -116,7 +116,7 @@ useEffect( ()=>{
         let balance = await contract1.methods.balanceOf(accounts[0]).call();
         
         let matic = await web3.eth.getBalance(accounts[0]);
-        balance = Number(balance)/10**6;
+        balance = Number(balance);
         matic = web3.utils.fromWei(matic, "ether");
 
 
