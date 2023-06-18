@@ -8,7 +8,8 @@ import ConnectWallet from "../../components/ConnectWallet";
 import LoginPackages from "../../components/LoginPackages";
 import UserTypePopup from "../../components/UserTypePopup";
 import UserType from "../../components/UserTypePopup";
-import Web3 from "web3";
+// import Web3 from "web3";
+
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
