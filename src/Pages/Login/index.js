@@ -166,7 +166,8 @@ useEffect( ()=>{
           Connect_Wallet(id);
         } catch {}
       }
-    } else if (id == "2" || id == "3") {
+    } 
+    // else if (id == "2" || id == "3") {
       //trust 1Wallet
       // provider = new WalletConnectProvider({
       //   rpc: {
@@ -176,60 +177,61 @@ useEffect( ()=>{
       // });
     
 
-      console.log("trust wallet");
+      // console.log("trust wallet");
 
       // console.log(provider);
       // console.log(provider.wc.peerMeta);
-      await provider.connect();
+      // await provider.connect();
 
       // console.log("this is provider");
       // console.log(provider.wc.peerMeta.name);
 
-      web3 = new Web3(provider);
-      setOpenWallet(false);
+      // web3 = new Web3(provider);
+      // setOpenWallet(false);
 
-      const networkId = await web3.eth.net.getId();
-      console.log("yguygy7 " + networkId);
-      if (networkId == NETWORK_ID) {
-        accounts = await web3.eth.getAccounts();        
-        set_address(accounts[0]);
-        const contract = new web3.eth.Contract(cont_abi, cont_address);
-        const contract1 = new web3.eth.Contract(tokenABI, Token_address);
-        let balance = await contract1.methods.balanceOf(accounts[0]).call();
+      // const networkId = await web3.eth.net.getId();
+      // console.log("yguygy7 " + networkId);
+      // if (networkId == NETWORK_ID) {
+      //   accounts = await web3.eth.getAccounts();        
+      //   set_address(accounts[0]);
+      //   const contract = new web3.eth.Contract(cont_abi, cont_address);
+      //   const contract1 = new web3.eth.Contract(tokenABI, Token_address);
+      //   let balance = await contract1.methods.balanceOf(accounts[0]).call();
  
 
-        let matic = await web3.eth.getBalance(accounts[0]);
-        balance = balance/10**6;
-        matic = web3.utils.fromWei(matic, "ether");
+      //   let matic = await web3.eth.getBalance(accounts[0]);
+      //   balance = balance/10**6;
+      //   matic = web3.utils.fromWei(matic, "ether");
 
 
-        set_isWalletConnected(true)
-        set_balance(balance)
-        set_matic(matic)
-        set_provider(provider)
-        set_web3(web3);
-        set_contract(contract)
-        set_contract1(contract1)
+      //   set_isWalletConnected(true)
+      //   set_balance(balance)
+      //   set_matic(matic)
+      //   set_provider(provider)
+      //   set_web3(web3);
+      //   set_contract(contract)
+      //   set_contract1(contract1)
 
 
 
-      }else {
-        if (provider.wc.peerMeta.name == "MetaMask") {
-          await provider.request({
-            method: "wallet_switchEthereumChain",
-            params: [{ chainId: "0x38" }],
-          });
-          Connect_Wallet(id);
-        } else {
-          setOpenWallet(false);
+      //  }
+    //else {
+    //     if (provider.wc.peerMeta.name == "MetaMask") {
+    //       await provider.request({
+    //         method: "wallet_switchEthereumChain",
+    //         params: [{ chainId: "0x38" }],
+    //       });
+    //       Connect_Wallet(id);
+    //     } else {
+    //       setOpenWallet(false);
 
-          await provider.disconnect();
-          alert("Kindly change your network to Binance");
-        }
-      }
-    } 
-  }
-  catch(e){
+    //       await provider.disconnect();
+    //       alert("Kindly change your network to Binance");
+    //     }
+    //   }
+    // } 
+  // }
+      }catch(e){
     console.log(e);
   }
   }
@@ -245,181 +247,181 @@ useEffect( ()=>{
 // alert("acc change error")
 //   }
 
-  async function check_Verified() {
-    let res={
-      "userAddress": {
-          "country": "",
-          "address": ""
-      },
-      "_id": "",
-      "firstName": "",
-      "lastName": "",
-      "wAddress": "",
-      "email": "",
-      "age": 0,
-      "emailVerified": false,
-      "__v": 0
-  }
-    try{
+//   async function check_Verified() {
+//     let res={
+//       "userAddress": {
+//           "country": "",
+//           "address": ""
+//       },
+//       "_id": "",
+//       "firstName": "",
+//       "lastName": "",
+//       "wAddress": "",
+//       "email": "",
+//       "age": 0,
+//       "emailVerified": false,
+//       "__v": 0
+//   }
+//     try{
 
-      await Axios.get(`https://ucanglobal-be.vercel.app/api/user/${
-       address.toLowerCase()}`
-      ).then((response)=>{
-        console.log(response);
+//       await Axios.get(`https://ucanglobal-be.vercel.app/api/user/${
+//        address.toLowerCase()}`
+//       ).then((response)=>{
+//         console.log(response);
 
-        if(response.data.emailVerified!=true)
-        {
-          // alert("alert verify ")
-          set_is_Verified(true);
-          res= response.data;
-        }
+//         if(response.data.emailVerified!=true)
+//         {
+//           // alert("alert verify ")
+//           set_is_Verified(true);
+//           res= response.data;
+//         }
         
-      })
-    return res;
-    }catch(e){
-      console.log(e.response);
-    }
+//       })
+//     return res;
+//     }catch(e){
+//       console.log(e.response);
+//     }
 
-  }
-
-
-async function handleLogin() {
-
-  const Is_register = await contract.methods.isRegister(address).call();
+//   }
 
 
-  if(Is_register)
-  { 
+// async function handleLogin() {
 
-   const res= await check_Verified();
-
-    console.log(res);
-    props.set_user(address, web3, provider, balance, matic,false,contract,contract1,res);            
-    dispatch(setUserToken(true));
-
-    navigate("/home");
-  }
-  else{
-    // await provider.disconnect();
-
-    alert("You are not a register member")
-    return
-  }
-
-}
-
-async function send_mail(upliner) {
-  try{
-
-    await Axios.post("https://ucanglobal-be.vercel.app/api/register",{ wAddress: upliner.toLowerCase()}
-  ).then((response)=>{
-    console.log("mail sent to upliner");
-    // set_mywinning(response.data)
-    
-  })
-
-  }catch(e){
-    console.log(e.response.data);
-  }
-
-}
+//   const Is_register = await contract.methods.isRegister(address).call();
 
 
+//   if(Is_register)
+//   { 
 
+//    const res= await check_Verified();
 
+//     console.log(res);
+//     props.set_user(address, web3, provider, balance, matic,false,contract,contract1,res);            
+//     dispatch(setUserToken(true));
 
+//     navigate("/home");
+//   }
+//   else{
+//     // await provider.disconnect();
 
+//     alert("You are not a register member")
+//     return
+//   }
 
-async function handleRegisteration(_package) {
-
-  const Is_register = await contract.methods.isRegister(address).call();
-  console.log("ref ... "+refId);
-//   const is_reg = await contract.methods.isRegister(address).call();
-// console.log(is_reg);
-  if(!Is_register)
-  { 
-    if(memberType!=null && _package!=null)
-    {          
-      
-      let _ref;
-
-      if(params.get("ref")!=null)
-      {
-
-        console.log("hello this it");
-        let address=await contract.methods.idtoAddress(params.get("ref")).call();
-        set_ref(address)
-
-        console.log("this is is given ref address: "+address);
-        _ref = address.toString();
-        
-
-      }
-          const total_inv = await contract.methods.total_member().call();
-
-          let package_price = packages_price[_package];
-          let val=Number(total_inv)+1
-          const newId = "ucgl089"+val;
-           
-          console.log("this is newid " + newId);
-          if (_ref == null) {
-            _ref = "0x0000000000000000000000000000000000000000";
-          }
-          try 
-          {
-
-          if (Number(package_price) > Number(balance))
-          {
-
-            alert("You dont have enough USDT to buy");
-            return;
-          }
-
-            package_price = package_price * 10 ** 6;
-            console.log("this is ref1 " + _ref);
-
-            await contract1.methods
-              .approve(cont_address, package_price.toString())
-              .send({ from: address });
-            const result = await contract.methods
-              .registration(_ref,memberType,newId.toString(),_package.toString())
-              .send({ from: address });
-            if (result) {
-              if(_ref!=null)
-              {
-                // send_mail(_ref)
-
-              }
-
-              props.set_user(address, web3, provider, balance, matic,false,contract,contract1);            
-              dispatch(setUserToken(true));
-
-              navigate("/home");
-            }
-          } catch (error) {
-            // Catch any errors for any of the above operations.
-
-            console.error(error);
-          }    
-      }
-  }
-  else{
-    // await provider.disconnect();
-
-    alert("You are a register member");
-    // props.set_user(address, web3, provider, balance, matic,false);            
-    // dispatch(setUserToken(true));
-
-    // navigate("/home");
-    return
-  }
-
-}
-// if(memberType!=0 && choosed_package!=0)
-// {
-//   console.log("hello reg call");
-//   handleRegisteration();
 // }
+
+// async function send_mail(upliner) {
+//   try{
+
+//     await Axios.post("https://ucanglobal-be.vercel.app/api/register",{ wAddress: upliner.toLowerCase()}
+//   ).then((response)=>{
+//     console.log("mail sent to upliner");
+//     // set_mywinning(response.data)
+    
+//   })
+
+//   }catch(e){
+//     console.log(e.response.data);
+//   }
+
+// }
+
+
+
+
+
+
+
+// async function handleRegisteration(_package) {
+
+//   const Is_register = await contract.methods.isRegister(address).call();
+//   console.log("ref ... "+refId);
+// //   const is_reg = await contract.methods.isRegister(address).call();
+// // console.log(is_reg);
+//   if(!Is_register)
+//   { 
+//     if(memberType!=null && _package!=null)
+//     {          
+      
+//       let _ref;
+
+//       if(params.get("ref")!=null)
+//       {
+
+//         console.log("hello this it");
+//         let address=await contract.methods.idtoAddress(params.get("ref")).call();
+//         set_ref(address)
+
+//         console.log("this is is given ref address: "+address);
+//         _ref = address.toString();
+        
+
+//       }
+//           const total_inv = await contract.methods.total_member().call();
+
+//           let package_price = packages_price[_package];
+//           let val=Number(total_inv)+1
+//           const newId = "ucgl089"+val;
+           
+//           console.log("this is newid " + newId);
+//           if (_ref == null) {
+//             _ref = "0x0000000000000000000000000000000000000000";
+//           }
+//           try 
+//           {
+
+//           if (Number(package_price) > Number(balance))
+//           {
+
+//             alert("You dont have enough USDT to buy");
+//             return;
+//           }
+
+//             package_price = package_price * 10 ** 6;
+//             console.log("this is ref1 " + _ref);
+
+//             await contract1.methods
+//               .approve(cont_address, package_price.toString())
+//               .send({ from: address });
+//             const result = await contract.methods
+//               .registration(_ref,memberType,newId.toString(),_package.toString())
+//               .send({ from: address });
+//             if (result) {
+//               if(_ref!=null)
+//               {
+//                 // send_mail(_ref)
+
+//               }
+
+//               props.set_user(address, web3, provider, balance, matic,false,contract,contract1);            
+//               dispatch(setUserToken(true));
+
+//               navigate("/home");
+//             }
+//           } catch (error) {
+//             // Catch any errors for any of the above operations.
+
+//             console.error(error);
+//           }    
+//       }
+//   }
+//   else{
+//     // await provider.disconnect();
+
+//     alert("You are a register member");
+//     // props.set_user(address, web3, provider, balance, matic,false);            
+//     // dispatch(setUserToken(true));
+
+//     // navigate("/home");
+//     return
+//   }
+
+// }
+// // if(memberType!=0 && choosed_package!=0)
+// // {
+// //   console.log("hello reg call");
+// //   handleRegisteration();
+// // }
 
 
 
@@ -477,16 +479,16 @@ async function handleRegisteration(_package) {
                   <img src="/images/loginVector.svg" className="vector-img" />
                 </div>
                 <div className="login-form flex flex-col items-center">
-                  <button className="button btn-login" onClick={(e) =>isWalletConnected? (handleLogin()):(alert("Kindly connect your wallet first")) }>
+                  {/* <button className="button btn-login" onClick={(e) =>isWalletConnected? (handleLogin()):(alert("Kindly connect your wallet first")) }>
                     Login
-                  </button>
-                  <div
+                  </button> */}
+                  {/* <div
                     className="have-account"
                     onClick={(e) =>isWalletConnected? (setOpenUserType(true)):(alert("Kindly connect your wallet first"))}
                   >
                     Don’t have an Account?{" "}
                     <span className="text-themeColor">Register</span>
-                  </div>
+                  </div> */}
                 </div>
                 {/* <div className="i-field flex flex-col mb-14">
                 <input
@@ -541,7 +543,7 @@ async function handleRegisteration(_package) {
           // setMemeberType={memberType}
           setOpenUserType={setOpenUserType}
           setchoosed_package={setchoosed_package}
-          handleRegisteration={handleRegisteration}
+          // handleRegisteration={handleRegisteration}
         />
       </Modal>
     </div>
