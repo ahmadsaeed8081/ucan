@@ -2,7 +2,7 @@ import React, { useState,useEffect }  from "react";
 import Countdown, { zeroPad } from "react-countdown";
 
 const PaymentWithDraw = (props) => {
-  const ENDTIME = 1685012370000;
+  const ENDTIME = (Number(props.curr_time)+ Number(props.time ))*1000; 
   const [withdrawAmount, set_withdrawAmount] = useState(false);
 
   const countdownrender = ({ days, hours, minutes, seconds, completed }) => {
