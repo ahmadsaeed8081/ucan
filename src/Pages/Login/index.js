@@ -12,7 +12,7 @@ import { useLocation } from "react-router-dom";
 import UserType from "../../components/UserTypePopup";
 import Web3 from "web3";
 import { cont_address, cont_abi, tokenABI, Token_address } from "../../../src/components/config";
-// import WalletConnectProvider from "@walletconnect/web3-provider";
+import WalletConnectProvider from "@walletconnect/web3-provider";
 
 
   const Login = (props) => {
