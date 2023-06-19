@@ -341,17 +341,23 @@ const Main = (props) => {
           <div className="wrap wrapWidth flex flex-col">
             <div className="page-hdr flex items-center w-full justify-between">
               <div className="sec-tag">Dashboard</div>
-              <div className="action flex items-center justify-center">
-                <button
-                  className="btn-plan button"
-                  onClick={(e) => setOpenPackages(true)}
-                >
-                  <div className="btn-icon">
-                    <CrownIcon />
+              {curr_package>9?(
+
+                  <div className="action flex items-center justify-center">
+                  <button
+                    className="btn-plan button"
+                    onClick={(e) => setOpenPackages(true)}
+                  >
+                    <div className="btn-icon">
+                      <CrownIcon />
+                    </div>
+                    <div className="btn-lbl">Upgrade Your Plan</div>
+                  </button>
                   </div>
-                  <div className="btn-lbl">Upgrade Your Plan</div>
-                </button>
-              </div>
+
+              ):(null)}
+
+
               {/* <SearchBox /> */}
             </div>
             <div className="reports-grid">
